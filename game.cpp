@@ -52,6 +52,24 @@ void placeSpecialTile(char field[HEIGHT][WIDTH], int& specialX, int& specialY, i
     field[specialY][specialX] = '#';  // Place the special tile
 }
 
+void placeWallTile(char field[HEIGHT][WIDTH], int& wallX, int& wallY, int playerX, int playerY) {
+    do {
+        wallX = rand() % WIDTH;  // Random column
+        wallY = rand() % HEIGHT;  // Random row
+    } while (wallX == playerX && wallY == playerY && wallX < WIDTH/2 && wallY < HEIGHT/2);  // Avoid placing on the player's position
+    field[wallY][wallX] = 'I';  // Place the special tile
+}
+
+/*void placeWallTile(char field[HEIGHT][WIDTH], int& wallX, int& wallY, int playerX, int playerY) {
+    wallX = 1;
+    wallY = 1;
+    do {
+        wallX++;
+        wallY++;
+        field[wallY][wallX] = 'I';  // Place the special tile
+    } while (wallX == playerX && wallY == playerY && wallX < WIDTH/2 && wallY < HEIGHT/2);  // Avoid placing on the player's position
+}*/
+
 int main() {
     srand(time(0));  // Seed the random number generator
 
@@ -65,12 +83,16 @@ int main() {
     // Initialize the field with dots
     for (int y = 0; y < HEIGHT; y++) {
         for (int x = 0; x < WIDTH; x++) {
-            field[y][x] = '.';  // Fill the field with dots
+            field[y][x] = ' ';  // Fill the field with dots
         }
     }
 
     int playerX = WIDTH / 2;  // Start in the center
     int playerY = HEIGHT / 2;
+
+    int wallX, wallY;
+    for(int i = 1; i< 100; ++i)
+    placeWallTile(field, wallX, wallY, playerX, playerY);
 
     // Place the special tile randomly
     int specialX, specialY;
@@ -109,7 +131,7 @@ int main() {
             playerY = HEIGHT / 2;
             for (int y = 0; y < HEIGHT; y++) {  // Clear the previous special tile
                 for (int x = 0; x < WIDTH; x++) {
-                    if (field[y][x] == '#') field[y][x] = '.';
+                    if (field[y][x] == '#') field[y][x] = ' ';
                 }
             }
             placeSpecialTile(field, specialX, specialY, playerX, playerY);
