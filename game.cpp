@@ -9,13 +9,16 @@ using namespace std;
 const int WIDTH = 80;   // Width of the field
 const int HEIGHT = 25;  // Height of the field
 
+
 void drawField(char field[HEIGHT][WIDTH], int playerX, int playerY) {
     clear();  // Clear the screen
 
     for (int y = 0; y < HEIGHT; y++) {
         for (int x = 0; x < WIDTH; x++) {
             if (x == playerX && y == playerY)
+            {
                 mvaddch(y, x, '@');  // Draw the player character
+            }
             else
                 mvaddch(y, x, field[y][x]);  // Draw the field
         }
@@ -60,16 +63,6 @@ void placeWallTile(char field[HEIGHT][WIDTH], int& wallX, int& wallY, int player
     field[wallY][wallX] = 'I';  // Place the special tile
 }
 
-/*void placeWallTile(char field[HEIGHT][WIDTH], int& wallX, int& wallY, int playerX, int playerY) {
-    wallX = 1;
-    wallY = 1;
-    do {
-        wallX++;
-        wallY++;
-        field[wallY][wallX] = 'I';  // Place the special tile
-    } while (wallX == playerX && wallY == playerY && wallX < WIDTH/2 && wallY < HEIGHT/2);  // Avoid placing on the player's position
-}*/
-
 int main() {
     srand(time(0));  // Seed the random number generator
 
@@ -91,7 +84,8 @@ int main() {
     int playerY = HEIGHT / 2;
 
     int wallX, wallY;
-    for(int i = 1; i< 100; ++i)
+    //places walls randomly
+    for(int i = 1; i< 900; ++i)
     placeWallTile(field, wallX, wallY, playerX, playerY);
 
     // Place the special tile randomly
@@ -105,16 +99,16 @@ int main() {
 
         switch (key) {
             case KEY_UP:  // Arrow Up
-                if (playerY > 0) playerY--;
+                if (playerY > 0 && field[playerY-1][playerX] != 'I') playerY--;
                 break;
             case KEY_DOWN:  // Arrow Down
-                if (playerY < HEIGHT - 1) playerY++;
+                if (playerY < HEIGHT - 1 && field[playerY+1][playerX] != 'I') playerY++;
                 break;
             case KEY_LEFT:  // Arrow Left
-                if (playerX > 0) playerX--;
+                if (playerX > 0 && field[playerY][playerX-1] != 'I') playerX--;
                 break;
             case KEY_RIGHT:  // Arrow Right
-                if (playerX < WIDTH - 1) playerX++;
+                if (playerX < WIDTH - 1 && field[playerY][playerX+1] != 'I') playerX++;
                 break;
             case 27:  // Escape key to exit
                 endwin();  // End ncurses mode
