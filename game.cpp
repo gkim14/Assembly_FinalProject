@@ -80,7 +80,7 @@ void placeWallTile(char field[HEIGHT][WIDTH], int& wallX, int& wallY, int player
     do {
         wallX = rand() % WIDTH;  // Random column
         wallY = rand() % HEIGHT;  // Random row
-    } while (wallX == playerX && wallY == playerY && wallX < WIDTH/2 && wallY < HEIGHT/2);  // Avoid placing on the player's position
+    } while (wallX == playerX && wallY == playerY);  // Avoid placing on the player's position
     field[wallY][wallX] = WALL_CHAR;  // Place the special tile
 }
 
@@ -100,7 +100,7 @@ int main() {
 	}
 	start_color();         //Start color 		
     init_pair(PLAYER_PAIR, COLOR_CYAN, COLOR_BLACK);
-    init_pair(SPECIAL_PAIR, COLOR_RED, COLOR_BLACK);
+    init_pair(SPECIAL_PAIR, COLOR_RED, COLOR_MAGENTA);
 
     char field[HEIGHT][WIDTH];
 
