@@ -6,6 +6,8 @@
 // Compile and run using:
 //      g++ -o game game.cpp -lncurses
 //      ./game
+//
+// Press esc twice to quit
 
 
 #include <iostream>
@@ -24,9 +26,10 @@ const int HEIGHT = 25;  // Height of the field
 
 const int PLAYER_PAIR = 1;      // for player color
 const int SPECIAL_PAIR = 2;     // for special color
+const int WALL_PAIR = 3;        // for wall color
 const int WALL_COUNT = 750;     // Number of walls generated
 
-const char WALL_CHAR = 'H';     // Char for wall tile
+const char WALL_CHAR = ':';     // Char for wall tile
 const char PLAYER_CHAR = '@';   // Char for player tile
 const char SPECIAL_CHAR = '#';  // Char for special tile
 const char EMPTY_CHAR = ' ';    // Char for empty tiles
@@ -49,6 +52,12 @@ void drawField(char field[HEIGHT][WIDTH], int playerX, int playerY) {
                 mvaddch(y, x, SPECIAL_CHAR);        // Draw the special character
                 attroff(COLOR_PAIR(SPECIAL_PAIR));  // Turn color off
             }
+            else if(field[y][x] == WALL_CHAR)
+            {
+                attron(COLOR_PAIR(WALL_PAIR));   // Wall color
+                mvaddch(y, x, WALL_CHAR);        // Draw the wall character
+                attroff(COLOR_PAIR(WALL_PAIR));  // Turn color off
+            }
             else
                 mvaddch(y, x, field[y][x]);         // Draw the field
         }
@@ -64,16 +73,30 @@ void drawBorder() {
     for (int x = 0; x < WIDTH; x++) {
         mvaddch(0, x, BORDER_CHAR);              // Top border
         mvaddch(HEIGHT - 1, x, BORDER_CHAR);     // Bottom border
+        if(x == (WIDTH/4))
+            for(int y = 0; y < (int)(HEIGHT/4); y++) 
+                mvaddch(HEIGHT-1-y, x, BORDER_CHAR); // Player menu side border
     }
 
     // Draw left and right borders
     for (int y = 0; y < HEIGHT; y++) {
         mvaddch(y, 0, BORDER_CHAR);              // Left border
         mvaddch(y, WIDTH - 1, BORDER_CHAR);      // Right border
+        if(y == (int)(HEIGHT/4))
+            for(int x = 0; x < WIDTH; x++)
+            {
+                mvaddch(HEIGHT - y, x, BORDER_CHAR);    // Player menu top
+                mvaddch(y-1, WIDTH-1-x, BORDER_CHAR);   // other menu bottom
+            }
     }
 
     refresh();  // Refresh the screen
+    mvprintw(HEIGHT / 2 - 1, WIDTH / 2 - 8, "(Pretend enemy here)");
     mvprintw(HEIGHT / 2, WIDTH / 2 - 10, "Press any key to return");
+    mvprintw(HEIGHT / 8, WIDTH / 2 - 8, "Cool menu stuff here");
+    mvprintw(HEIGHT -(HEIGHT / 8), 5, "Player stats");
+    mvprintw(HEIGHT -(HEIGHT / 8), (WIDTH-(WIDTH/4))/2 + WIDTH/4 - 10, "Player menu stuff");
+
     refresh();
 }
 
@@ -110,7 +133,8 @@ int main() {
 	}
 	start_color();         //Start color 		
     init_pair(PLAYER_PAIR, COLOR_CYAN, COLOR_BLACK);    // Set player color
-    init_pair(SPECIAL_PAIR, COLOR_RED, COLOR_MAGENTA);  // Set special color
+    init_pair(SPECIAL_PAIR, COLOR_MAGENTA, COLOR_YELLOW);  // Set special color
+    init_pair(WALL_PAIR, COLOR_WHITE, COLOR_WHITE);     // Set wall color
 
     char field[HEIGHT][WIDTH];
 
