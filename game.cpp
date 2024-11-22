@@ -1,3 +1,13 @@
+// Assembly Project Proof of Concept
+// Grace Kim and Jonathan Brough 
+// Nov 21, 2024
+//
+// Proof of Concept for our game 
+// Compile and run using:
+//      g++ -o game game.cpp -lncurses
+//      ./game
+
+
 #include <iostream>
 #include <ncurses.h>  // For terminal input and screen control
 #include <unistd.h>   // For usleep()
@@ -12,16 +22,15 @@ using std::srand;
 const int WIDTH = 80;   // Width of the field
 const int HEIGHT = 25;  // Height of the field
 
-const int PLAYER_PAIR = 1;
-const int SPECIAL_PAIR = 2;
-const int WALL_COUNT = 750;
+const int PLAYER_PAIR = 1;      // for player color
+const int SPECIAL_PAIR = 2;     // for special color
+const int WALL_COUNT = 750;     // Number of walls generated
 
-const char WALL_CHAR = 'H';
-const char PLAYER_CHAR = '@';
-const char SPECIAL_CHAR = '#';
-const char EMPTY_CHAR = ' ';
-const char BORDER_CHAR = '*';
-
+const char WALL_CHAR = 'H';     // Char for wall tile
+const char PLAYER_CHAR = '@';   // Char for player tile
+const char SPECIAL_CHAR = '#';  // Char for special tile
+const char EMPTY_CHAR = ' ';    // Char for empty tiles
+const char BORDER_CHAR = '*';   // Char for battle menu border
 
 void drawField(char field[HEIGHT][WIDTH], int playerX, int playerY) {
     clear();  // Clear the screen
@@ -38,7 +47,7 @@ void drawField(char field[HEIGHT][WIDTH], int playerX, int playerY) {
             {
                 attron(COLOR_PAIR(SPECIAL_PAIR));   // Special color
                 mvaddch(y, x, SPECIAL_CHAR);        // Draw the special character
-                attroff(COLOR_PAIR(SPECIAL_PAIR));
+                attroff(COLOR_PAIR(SPECIAL_PAIR));  // Turn color off
             }
             else
                 mvaddch(y, x, field[y][x]);         // Draw the field
@@ -47,6 +56,7 @@ void drawField(char field[HEIGHT][WIDTH], int playerX, int playerY) {
     refresh();  // Refresh the screen to reflect changes
 }
 
+// Basic placeholder for battle menu
 void drawBorder() {
     clear();  // Clear the screen
 
@@ -81,7 +91,7 @@ void placeWallTile(char field[HEIGHT][WIDTH], int& wallX, int& wallY, int player
         wallX = rand() % WIDTH;  // Random column
         wallY = rand() % HEIGHT;  // Random row
     } while (wallX == playerX && wallY == playerY);  // Avoid placing on the player's position
-    field[wallY][wallX] = WALL_CHAR;  // Place the special tile
+    field[wallY][wallX] = WALL_CHAR;  // Place the wall tile
 }
 
 int main() {
@@ -99,8 +109,8 @@ int main() {
 		exit(1);
 	}
 	start_color();         //Start color 		
-    init_pair(PLAYER_PAIR, COLOR_CYAN, COLOR_BLACK);
-    init_pair(SPECIAL_PAIR, COLOR_RED, COLOR_MAGENTA);
+    init_pair(PLAYER_PAIR, COLOR_CYAN, COLOR_BLACK);    // Set player color
+    init_pair(SPECIAL_PAIR, COLOR_RED, COLOR_MAGENTA);  // Set special color
 
     char field[HEIGHT][WIDTH];
 
