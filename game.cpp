@@ -1,14 +1,19 @@
-// Assembly Project Proof of Concept
-// Grace Kim and Jonathan Brough 
-// Nov 21, 2024
-//
-// Proof of Concept for our game 
-// Compile and run using:
-//      g++ -o game game.cpp -lncurses
-//      ./game
-//
-// Press esc twice to quit
-
+/**
+ * Assembly Project Proof of Concept
+ * Grace Kim and Jonathan Brough 
+ * Nov 21, 2024
+ * 
+ * Proof of Concept for our game 
+ * Compile and run using:
+ *   g++ -o game game.cpp -lncurses
+ *  ./game
+ * 
+ * Press esc twice to quit
+ * Use WASD to move
+ * Move to special char to start battle window
+ * (Might get softlocked by walls)
+ *
+ * */ 
 
 #include <iostream>
 #include <ncurses.h>  // For terminal input and screen control
@@ -21,8 +26,8 @@ using std::rand;
 using std::srand;
 
 
-const int WIDTH = 80;   // Width of the field
-const int HEIGHT = 25;  // Height of the field
+const int WIDTH = 80;           // Width of the field
+const int HEIGHT = 25;          // Height of the field
 
 const int PLAYER_PAIR = 1;      // for player color
 const int SPECIAL_PAIR = 2;     // for special color
@@ -132,9 +137,9 @@ int main() {
 		exit(1);
 	}
 	start_color();         //Start color 		
-    init_pair(PLAYER_PAIR, COLOR_CYAN, COLOR_BLACK);    // Set player color
-    init_pair(SPECIAL_PAIR, COLOR_MAGENTA, COLOR_YELLOW);  // Set special color
-    init_pair(WALL_PAIR, COLOR_WHITE, COLOR_WHITE);     // Set wall color
+    init_pair(PLAYER_PAIR, COLOR_CYAN, COLOR_BLACK);        // Set player color
+    init_pair(SPECIAL_PAIR, COLOR_MAGENTA, COLOR_YELLOW);   // Set special color
+    init_pair(WALL_PAIR, COLOR_WHITE, COLOR_WHITE);         // Set wall color
 
     char field[HEIGHT][WIDTH];
 
