@@ -176,6 +176,7 @@ void intro(char field[HEIGHT][WIDTH])
                 mvaddch(y, x, EMPTY_CHAR);
             }
         }
+    drawBorder(0,0,WIDTH-1, HEIGHT-1);
     mvprintw(HEIGHT - (HEIGHT/4), WIDTH/2 -12, "Press any button to start!");
     getch();        // Wait for any key to resume
 
