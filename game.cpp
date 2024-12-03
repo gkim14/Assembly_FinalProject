@@ -24,6 +24,7 @@
 using std::time;
 using std::rand;
 using std::srand;
+using std::string;
 
 
 const int WIDTH = 80;           // Width of the field
@@ -122,6 +123,48 @@ void placeWallTile(char field[HEIGHT][WIDTH], int& wallX, int& wallY, int player
     field[wallY][wallX] = WALL_CHAR;  // Place the wall tile
 }
 
+void intro(char field[HEIGHT][WIDTH])
+{
+    int counter = 0;
+    string start_screen = 
+"           _____            _          ____                         _           "
+"          |_   _|___ __  __| |_       | __ )   __ _  ___   ___   __| |          "
+"            | | / _ \\\\ \\/ /| __|_____ |  _ \\  / _` |/ __| / _ \\ / _` |          "
+"            | ||  __/ >  < | |_|_____|| |_) || (_| |\\__ \\|  __/| (_| |          "
+"            |_| \\___|/_/\\_\\ \\__|      |____/  \\__,_||___/ \\___| \\__,_|          "
+"                               ____   ____    ____                              "
+"                              |  _ \\ |  _ \\  / ___|                             "
+"                              | |_) || |_) || |  _                              "
+"                              |  _ < |  __/ | |_| |                             "
+"                              |_| \\_\\|_|     \\____|                             "
+;
+    
+    for(int y = 0; y < HEIGHT; y++)
+        for(int x = 0; x< WIDTH; x++)
+        {
+            if(y > 2 && y < 13)
+            {
+                mvaddch(y, x, (char)(start_screen[counter]));
+                counter++;
+            }
+            else
+            {
+                mvaddch(y, x, EMPTY_CHAR);
+            }
+        }
+    mvprintw(HEIGHT - (HEIGHT/4), WIDTH/2 -12, "Press any button to start!");
+    getch();        // Wait for any key to resume
+
+    //basic info window
+    drawField(field, -1, -1);
+    mvprintw(HEIGHT/2-3, WIDTH/2 -22, "Welcome to this (sorta) text-based game!");
+    mvprintw(HEIGHT/2-2, WIDTH/2 -10, "Use WASD to move.");
+    mvprintw(HEIGHT/2-1, WIDTH/2 -21, "Interact with the # to start a battle.");
+    mvprintw(HEIGHT/2+2, WIDTH/2 -17, "Press any button to continue.");
+    getch();        // Wait for any key to resume
+
+}
+
 int main() {
     srand(time(0));  // Seed the random number generator
 
@@ -149,6 +192,9 @@ int main() {
             field[y][x] = EMPTY_CHAR;  // Fill the field with dots
         }
     }
+
+    //start screen here
+    intro(field);
 
     int playerX = WIDTH / 2;  // Start in the center
     int playerY = HEIGHT / 2;
