@@ -181,11 +181,12 @@ void intro(char field[HEIGHT][WIDTH])
 
     //basic info window
     drawField(field, -1, -1);
-    drawBorder(WIDTH/2-24, HEIGHT/2-7, 50, 13);
-    mvprintw(HEIGHT/2-3, WIDTH/2 -19, "Welcome to this (sorta) text-based game!");
+    drawBorder(WIDTH/2-24, HEIGHT/2-7, 50, 14);
+    mvprintw(HEIGHT/2-3, WIDTH/2 -19, "Welcome to this (sorta functional) game!");
     mvprintw(HEIGHT/2-2, WIDTH/2 -7, "Use WASD to move.");
-    mvprintw(HEIGHT/2-1, WIDTH/2 -18, "Interact with the # to start a battle.");
-    mvprintw(HEIGHT/2+2, WIDTH/2 -14, "Press any button to continue.");
+    mvprintw(HEIGHT/2-1, WIDTH/2 -19, "Interact with the [#] to start a battle.");
+    mvprintw(HEIGHT/2, WIDTH/2 -12, "Press [ESC] twice to quit.");
+    mvprintw(HEIGHT/2+3, WIDTH/2 -14, "Press any button to continue.");
     getch();        // Wait for any key to resume
 
 }
