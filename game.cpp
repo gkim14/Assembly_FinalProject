@@ -33,9 +33,11 @@ const int HEIGHT = 25;          // Height of the field
 const int PLAYER_PAIR = 1;      // for player color
 const int SPECIAL_PAIR = 2;     // for special color
 const int WALL_PAIR = 3;        // for wall color
+const int WATER_PAIR = 4;       // for water color
 const int WALL_COUNT = 750;     // Number of walls generated
 
 const char WALL_CHAR = ':';     // Char for wall tile
+const char WATER_CHAR = '~';     // CHar for water tile
 const char PLAYER_CHAR = '@';   // Char for player tile
 const char SPECIAL_CHAR = '#';  // Char for special tile
 const char EMPTY_CHAR = ' ';    // Char for empty tiles
@@ -64,15 +66,37 @@ void drawField(char field[HEIGHT][WIDTH], int playerX, int playerY) {
                 mvaddch(y, x, WALL_CHAR);        // Draw the wall character
                 attroff(COLOR_PAIR(WALL_PAIR));  // Turn color off
             }
+            else if(field[y][x] == WATER_CHAR)
+            {
+                attron(COLOR_PAIR(WATER_PAIR));   // Water color
+                mvaddch(y, x, WATER_CHAR);        // Draw the water character
+                attroff(COLOR_PAIR(WATER_PAIR));  // Turn color off
+            }
             else
-                mvaddch(y, x, field[y][x]);         // Draw the field
+                mvaddch(y, x, field[y][x]);        // Draw the field
         }
     }
     refresh();  // Refresh the screen to reflect changes
 }
 
-// Basic placeholder for battle menu
-void drawBorder() {
+void drawBorder(int startX, int startY, int width, int height)
+{
+    // Draw top and bottom borders
+    for (int x = startX; x < startX + width; x++)
+    {
+        mvaddch(startY, x, BORDER_CHAR);                 // Top border
+        mvaddch(startY+height - 1, x, BORDER_CHAR);     // Bottom border
+    }
+
+    // Draw left and right borders
+    for (int y = startY; y < startY + height; y++)
+    {
+        mvaddch(y, startX, BORDER_CHAR);                 // left border
+        mvaddch(y, startX+width-1, BORDER_CHAR);     // right border
+    }
+}
+
+void drawBattleBorder() {
     clear();  // Clear the screen
 
     // Draw top and bottom borders
@@ -157,10 +181,11 @@ void intro(char field[HEIGHT][WIDTH])
 
     //basic info window
     drawField(field, -1, -1);
-    mvprintw(HEIGHT/2-3, WIDTH/2 -22, "Welcome to this (sorta) text-based game!");
-    mvprintw(HEIGHT/2-2, WIDTH/2 -10, "Use WASD to move.");
-    mvprintw(HEIGHT/2-1, WIDTH/2 -21, "Interact with the # to start a battle.");
-    mvprintw(HEIGHT/2+2, WIDTH/2 -17, "Press any button to continue.");
+    drawBorder(WIDTH/2-24, HEIGHT/2-7, 50, 13);
+    mvprintw(HEIGHT/2-3, WIDTH/2 -19, "Welcome to this (sorta) text-based game!");
+    mvprintw(HEIGHT/2-2, WIDTH/2 -7, "Use WASD to move.");
+    mvprintw(HEIGHT/2-1, WIDTH/2 -18, "Interact with the # to start a battle.");
+    mvprintw(HEIGHT/2+2, WIDTH/2 -14, "Press any button to continue.");
     getch();        // Wait for any key to resume
 
 }
@@ -183,6 +208,7 @@ int main() {
     init_pair(PLAYER_PAIR, COLOR_CYAN, COLOR_BLACK);        // Set player color
     init_pair(SPECIAL_PAIR, COLOR_MAGENTA, COLOR_YELLOW);   // Set special color
     init_pair(WALL_PAIR, COLOR_WHITE, COLOR_WHITE);         // Set wall color
+    init_pair(WATER_PAIR, COLOR_CYAN, COLOR_BLUE);         // Set water color
 
     char field[HEIGHT][WIDTH];
 
@@ -233,7 +259,7 @@ int main() {
 
         // Check if the player moved onto the special tile
         if (playerX == specialX && playerY == specialY) {
-            drawBorder();   // Show border screen
+            drawBattleBorder();   // Show border screen
             getch();        // Wait for any key to resume
 
             // Reset player position and place a new special tile
